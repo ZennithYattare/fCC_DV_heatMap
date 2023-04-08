@@ -29,7 +29,7 @@ export function heatMap() {
 		.append("svg")
 		.attr("id", "legend")
 		.attr("transform", "translate(60, 0)")
-		.attr("width", 300)
+		.attr("width", 500)
 		.attr("height", 50);
 
 	//  an array of d3.interpolateInferno(0.0) to d3.interpolateInferno(1.0)
@@ -70,9 +70,10 @@ export function heatMap() {
 			const temps = variances.map((item) => {
 				return Math.round((baseTemp + item) * 100) / 100;
 			});
-			console.log(temps);
 
 			const xScale = d3.scaleBand().domain(years).range([0, 1300]);
+
+			// console.log(xScale.domain());
 
 			const xAxis = d3.axisBottom(xScale).tickValues(
 				xScale.domain().filter((d, i) => {
@@ -190,39 +191,44 @@ export function heatMap() {
 				.on("mousemove", mousemove)
 				.on("mouseleave", mouseleave);
 
+			// TODO - append text to legend for each color in infernoRange with x-axis of variances
+			const minTemperature = Math.min(...temps);
+			const maxTemperature = Math.max(...temps);
+
+			const xScaleLegend = d3
+				.scaleLinear()
+				.domain([minTemperature, maxTemperature])
+				.range([0, 441])
+				.nice();
+
+			console.log(minTemperature, maxTemperature);
+
+			const xAxisLegend = d3.axisBottom().scale(xScaleLegend).ticks(10);
+
 			// using legend const, append a rect for each color in infernoRange with x-axis of variances
 			legend
+				.append("g")
+				.attr("id", "x-axis-legend")
+				.attr("transform", "translate(29, 31)")
+				.call(xAxisLegend);
+
+			legend
+				.append("g")
+				.attr("transform", "translate(30, 0)")
 				.selectAll("rect")
 				.data(infernoRange)
 				.enter()
 				.append("rect")
-
 				.attr("x", (d, i) => {
-					return i * 30;
+					return i * 40;
 				})
 				.attr("y", 0)
-				.attr("width", 30)
+				.attr("width", 40)
 				.attr("height", 30)
 				.style("fill", (d) => {
 					return d;
 				})
 				.style("stroke-width", 1)
 				.style("stroke", "black");
-
-			// TODO - append text to legend for each color in infernoRange with x-axis of variances
-			legend.selectAll("text");
-			const xScaleLegend = (d) => console.log(d);
-			d3.scaleLinear().domain([temps.min, temps.max]).range([0, 300]);
-
-			// const xAxisLegend = d3.axisBottom(xScale).tickValues(
-			// 	xScale.domain().filter((d, i) => {
-			// 		return !(d % 10);
-			// 	})
-			// );
-
-			// svg.append("g")
-			// 	.attr("id", "x-axis")
-			// 	.attr("transform", "translate(60, 400)")
-			// 	.call(xAxis);
 		});
 }
