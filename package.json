@@ -1,5 +1,6 @@
 {
 	"name": "fcc-dv-heatmap",
+	"homepage": "https://zennithyattare.github.io/fCC_DV_heatMap/",
 	"private": true,
 	"version": "0.0.0",
 	"type": "module",
