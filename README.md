@@ -1,5 +1,5 @@
 # freeCodeCamp: Visualize Data with a Heat Map
-Accomplished as a part of the Front End Development Libraries certification.
+Accomplished as a part of the Data Visualization certification.
 
 GitHub Pages: https://zennithyattare.github.io/fCC_DV_heatMap/
 
